@@ -1,0 +1,143 @@
+/* Custom enhancements: dark mode, animations, improved typography & list wrapping */
+:root{
+  --bg:#0b2546; /* not used for full site, keep as accent */
+  --page-bg:#f6f9ff;
+  --panel:#ffffff;
+  --muted:#617089;
+  --accent:#0b5fff;
+  --text:#0b1b2b;
+  --glass: rgba(11,37,70,0.04);
+}
+html{scroll-behavior:smooth}
+body{background:var(--page-bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+
+/* Theme states */
+body.is-dark{--page-bg:#061324;--panel:#071824;--muted:#9fb4c8;--accent:#6ea8ff;--text:#e6f0ff;--glass: rgba(255,255,255,0.03)}
+
+/* Ensure template header/nav/sections follow the theme variables */
+#header, #header h1, #header p, #nav, #main, #footer, #wrapper{background:transparent}
+#header h1, #header p{color:var(--text) !important}
+#nav a{color:var(--accent) !important}
+#nav a:hover{opacity:0.9}
+
+/* Light mode explicit overrides (to avoid template forcing unreadable colors) */
+body:not(.is-dark) #header h1, body:not(.is-dark) #header p, body:not(.is-dark) #footer, body:not(.is-dark) #nav a{color:var(--text) !important}
+
+/* Dark mode specifics */
+body.is-dark #header h1, body.is-dark #header p, body.is-dark #nav a, body.is-dark #footer{color:var(--text) !important}
+
+#theme-toggle{background:transparent;display:none !important}
+/* Header / Nav theme toggle */
+.theme-toggle{background:rgba(255,255,255,0.06);border:0;font-size:15px;cursor:pointer;padding:8px 10px;border-radius:10px;margin-left:12px;display:inline-flex;align-items:center;gap:8px}
+.theme-toggle:hover{transform:translateY(-1px)}
+.theme-toggle .theme-label{font-size:13px;color:var(--muted)}
+
+/* Place toggle top-right inside nav (toggle is inside #nav in index.html) */
+#nav{position:relative}
+.theme-toggle{position:absolute;top:10px;right:16px;z-index:30}
+
+/* Ensure toggle contrast in dark mode */
+body.is-dark .theme-toggle{background:rgba(255,255,255,0.04)}
+body.is-dark .theme-toggle .theme-label{color:var(--muted)}
+
+/* Improve layout spacing and wrapping for features/lists */
+.features, .statistics{display:flex;flex-direction:column;gap:14px}
+.features li, .features > li{list-style:none}
+.features h3{margin:0 0 6px}
+.features p, .features ul li{margin:6px 0;color:var(--muted);line-height:1.45}
+
+/* Fix nested lists wrapping and width so list items don't become one-word lines */
+.features ul{margin:8px 0 0 18px;padding:0;display:block;white-space:normal}
+.features ul li{display:list-item;white-space:normal}
+
+
+/* Ensure long inline text wraps nicely */
+li, p, h2, h3{word-wrap:break-word;hyphens:auto}
+
+/* Cards & panels */
+.major, .spotlight .content, .features article{background:var(--panel);border-radius:12px;padding:18px;box-shadow:0 10px 30px var(--glass);transition:transform .45s cubic-bezier(.2,.9,.3,1),box-shadow .35s}
+.major:hover, .features article:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,37,70,0.08)}
+
+/* Image styling */
+.spotlight .image img{border-radius:10px}
+
+/* Buttons */
+.button{transition:transform .18s ease,box-shadow .18s ease}
+.button:hover{transform:translateY(-3px)}
+.button.primary{background:var(--accent);color:#fff}
+
+
+
+/* Responsive grid for features */
+@media(min-width:900px){
+  .features{flex-direction:row}
+  .features > li{flex:1}
+}
+
+/* Accordion styles (details/summary) */
+.accordion details{background:var(--panel);border-radius:8px;padding:12px;box-shadow:0 8px 20px var(--glass)}
+.accordion summary{cursor:pointer;font-weight:600}
+.accordion details[open]{transform:translateY(-3px)}
+.accordion details > div{margin-top:8px;color:var(--muted)}
+
+/* Showcase gallery */
+#showcase{padding:8px 0}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.gallery img{width:100%;height:160px;object-fit:cover;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px var(--glass);transition:transform .18s}
+.gallery img:hover{transform:scale(1.03)}
+
+/* Lightbox modal */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,8,15,0.6);z-index:1000}
+.lightbox.open{display:flex}
+.lightbox img{max-width:92%;max-height:86%;border-radius:8px;box-shadow:0 18px 60px rgba(2,6,15,0.6)}
+
+/* Footer visibility fix */
+#footer{color:var(--text) !important}
+
+
+/* Accessibility: focus styles */
+a:focus, button:focus{outline:3px solid rgba(11,95,255,0.18);outline-offset:3px}
+
+/* Fix for the issue where long inline lists broke into one-word lines (caused by legacy word-spacing rules) */
+*{word-spacing:normal;letter-spacing:normal}
+
+/* Prevent layout jump on simple text hover - don't apply transforms to plain links */
+a{transition:color .18s ease, border-bottom .18s ease; transform:none}
+a:hover{text-decoration:none}
+
+/* Hover lift for interactive elements (apply via class or rely on .button) */
+.hover-lift, .button{display:inline-block;transition:transform .18s ease,box-shadow .18s ease}
+.hover-lift:hover, .button:hover{transform:translateY(-3px)}
+
+/* Soft corners utility */
+.soft{border-radius:12px;overflow:hidden}
+
+/* Carousel */
+.carousel{position:relative;overflow:hidden;border-radius:12px;background:var(--panel);padding:12px}
+.carousel .slides{display:flex;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
+.carousel .slide{min-width:100%;box-sizing:border-box;cursor:pointer;padding:6px;transform:translateX(0)}
+.carousel .slide img{width:100%;height:320px;object-fit:cover;border-radius:8px;display:block}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);color:#fff;border:0;width:42px;height:42px;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(2,6,15,0.4)}
+.carousel-arrow.prev{left:12px}
+.carousel-arrow.next{right:12px}
+.carousel-arrow:focus{outline:3px solid rgba(11,95,255,0.18)}
+.carousel-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:8px}
+.carousel-dots .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.35);border:0;cursor:pointer;padding:0}
+.carousel-dots .dot.active{background:var(--accent);box-shadow:0 6px 14px rgba(11,37,70,0.12)}
+
+/* Lightbox enhancements */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,8,15,0.65);z-index:1000;padding:20px}
+.lightbox.open{display:flex}
+.lightbox-inner{position:relative;max-width:94%;max-height:90%}
+.lightbox-inner img{width:auto;height:auto;max-width:100%;max-height:86vh;border-radius:10px;box-shadow:0 18px 60px rgba(2,6,15,0.6);display:block}
+.lightbox-close{position:absolute;top:-12px;right:-12px;background:rgba(0,0,0,0.55);color:#fff;border:0;width:38px;height:38px;border-radius:999px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
+
+/* Testimonials */
+.testimonials{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:900px){.testimonials{grid-template-columns:repeat(3,1fr)}}
+.testimonial{background:var(--panel);padding:18px;border-radius:12px;box-shadow:0 10px 30px var(--glass)}
+.testimonial p{color:var(--muted);margin:8px 0 0}
+.testimonial cite{display:block;margin-top:12px;font-weight:600;color:var(--text)}
+
+/* ensure footer remains readable */
+#footer{color:var(--text) !important}
